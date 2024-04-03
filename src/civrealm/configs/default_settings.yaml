@@ -56,6 +56,8 @@ batch_size_run: 5
 epoch_num: 1
 # The port used by the first environment; other parallel environments use ports following this port.
 port_start: 6300
+# The username of minitask
+minitask_username: minitask
 
 debug:
   # Records the game state and available actions at every step.
@@ -90,7 +92,9 @@ debug:
   # load_game: "testcontroller_T200_2023-07-31-01_51"
   # The name of the saved game to be loaded. 
   load_game: ""
-  
+  # whether to aitoggle and take the player
+  take_player: 
+
   # whether to use randomly generated seeds for running games. if True, the following random seeds (mapseed, gameseed, agentseed) are ignored
   randomly_generate_seeds: True
   # The seed for generating a map. The same seed leads to the same map.

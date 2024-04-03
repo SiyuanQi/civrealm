@@ -712,6 +712,9 @@ class CivController(CivPropController):
         self.ws_client.send_message(f"/set victories {fc_args['victories']}")
         self.ws_client.send_message(f"/set endvictory {fc_args['endvictory']}")
         self.ws_client.send_message(f"/set advisor {fc_args['advisor']}")
+        if fc_args['debug.take_player']:
+            self.clstate.aitoggle_player(fc_args['debug.take_player'])
+            self.clstate.take_player(fc_args['debug.take_player'])
 
         requests.post(
             f"http://{self.host}:{fc_web_args['port']}/gamesetting?openchatbox={fc_args['openchatbox']}")
