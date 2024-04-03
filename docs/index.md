@@ -14,7 +14,7 @@ CivRealm is an interactive environment for the open-source strategy game [Freeci
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
-  align-items: center;
+  align-items: stretch;
   }
 .grid > article {
   border: 1px solid #ccc;

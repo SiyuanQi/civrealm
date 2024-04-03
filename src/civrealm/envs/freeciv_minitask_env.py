@@ -45,7 +45,7 @@ class MinitaskType(ExtendedEnum):
     MT_BATTLE_ATTACK_CITY = "battle_attack_city"
     MT_BATTLE_DEFEND_CITY = "battle_defend_city"
     MT_DIPLOMACY_TRADE_TECH = "diplomacy_trade_tech"
-
+    MT_FULL_GAME_50_TURN = "fullgame_50_turn_objectives"
 
 @unique
 class MinitaskGameStatus(ExtendedEnum):
@@ -67,16 +67,17 @@ class MinitaskDifficulty(ExtendedEnum):
     MD_HARD = 'hard'
 
 
-DEFAULT_TASK = "minitask"
 MAX_ID = 999
 BATTLE_MINITASK_LIST = [
     _minitask for _minitask in MinitaskType.list() if _minitask.startswith("battle")]
+FULLGAME_MINITASK_LIST = [
+    _minitask for _minitask in MinitaskType.list() if _minitask.startswith("fullgame")]
 
 
 class FreecivMinitaskEnv(FreecivBaseEnv):
     """ CivRealm environment for mini-game. """
 
-    def __init__(self, username: str = DEFAULT_TASK, client_port: int = fc_args['client_port']):
+    def __init__(self, username: str = fc_args["minitask_username"], client_port: int = fc_args['client_port']):
         super().__init__(username=username, client_port=client_port, is_minitask=True)
         fc_args['username'] = username
         self.filename = None
@@ -98,6 +99,10 @@ class FreecivMinitaskEnv(FreecivBaseEnv):
         
         if isinstance(minitask_type, list):
             minitask_type = random.choice(minitask_type)
+
+        if minitask_type in FULLGAME_MINITASK_LIST and fc_args['username'] == "minitask":
+            minitask_level = "normal"
+            minitask_id = 0
 
         if minitask_type not in MinitaskType.list():
             raise ValueError(
@@ -161,7 +166,9 @@ class FreecivMinitaskEnv(FreecivBaseEnv):
             fc_args['username'], minitask_pattern, max_id)
         self.filename = minitask
         self.task_type = re.match(
-            r"{}_T\d+_task_([a-z]+)_.*".format(fc_args['username']), minitask)[1]
+            r"{}_T\d+_task_([0-9a-z_]+)_level".format(fc_args['username']), minitask)[1]
+        if self.task_type in FULLGAME_MINITASK_LIST and fc_args['username'] == "minitask":
+            self.civ_controller.set_parameter('debug.take_player', "AI*1")
         self.civ_controller.set_parameter('debug.load_game', minitask)
         return
 
