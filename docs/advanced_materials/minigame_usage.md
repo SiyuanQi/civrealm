@@ -35,10 +35,10 @@ By the end of this tutorial, you will be able to use API to play the mini-game.
 
 To load the mini-game sav file `MINIGAME_FILE_NAME` by the freeciv-web service, follow these steps:
 
-1. Login by the Player name `minitask`, and click the `Customize Game` button;
+1. Login by the Player name `minitask` and password `civrealn`, and click the `Customize Game` button. Then close the login panel;
 ![minigame-login](../assets/minigame-login.png)
 
-2. Enter the command `/load MINIGAME_FILE_NAME` in the input box at the bottom;
+2. Enter the command `/load MINIGAME_FILE_NAME` in the input box at the bottom, available minigame_file_name are in `/var/lib/tomcat10/webapps/data/savegames/minitask`;
 ![minigame-load](../assets/minigame-load.png)
 
 3. Click the `Start Game` button to start the mini-game.
