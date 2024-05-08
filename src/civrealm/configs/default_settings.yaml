@@ -2,7 +2,7 @@
 username: myagent
 # The maximum number of turns per game. The game will end after the turn number reaches this limit.
 max_turns: 1000
-# The name of service used
+# The name of service used. Options: freeciv-web | fciv-net
 service: freeciv-web
 # The URL that hosts the game.
 host: localhost

@@ -1,7 +1,6 @@
 version: "3"
 services:
 
-  # stable version
   freeciv-web:
     image: freeciv/freeciv-web:latest
     container_name: freeciv-web
@@ -11,31 +10,17 @@ services:
       - "6000-6009:6000-6009"
       - "7000-7009:7000-7009"
       - "8888:8080"
+      - "1240:1240"
     user: docker
 
-  # test version
-  freeciv-web-test:
-    image: freeciv/freeciv-web:1.4.4
-    container_name: freeciv-web-test
-    environment: 
-      host: civrealm-service.mybigai.ac.cn
+  fciv-net:
+    image: freeciv/fciv-net:latest
+    container_name: fciv-net
     ports:
-      - "8580:80"
-      - "4502:4002"
-      - "6500-6509:6000-6009"
-      - "7500-7509:7000-7009"
-      - "9588:8080"
-    user: docker
-
-  # dev version
-  freeciv-web-dev:
-    image: freeciv/freeciv-web:1.4.4
-    container_name: freeciv-web-dev
-    ports:
-      - "8680:80"
-      - "4602:4002"
-      - "6600-6609:6000-6009"
-      - "7600-7609:7000-7009"
-      - "9688:8080"
+      - "8280:80"
+      - "4202:4002"
+      - "6200-6209:6000-6009"
+      - "7200-7209:7000-7009"
+      - "9088:8080"
     user: docker
 

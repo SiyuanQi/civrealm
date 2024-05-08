@@ -44,13 +44,13 @@ def check_container_exists(service_name=fc_args['service']):
         return False
 
 
-def download_freeciv_web_image(image_version='latest'):
+def download_freeciv_web_image(image_name=f'civrealm/{fc_web_args["image"]}'):
     # pull image
-    pull_command = f"docker pull civrealm/freeciv-web:{image_version}"
+    pull_command = f"docker pull {image_name}"
     subprocess.run(pull_command, shell=True, check=True)
 
     # rename image
-    tag_command = f"docker tag civrealm/freeciv-web:{image_version} freeciv/freeciv-web:{image_version}"
+    tag_command = f"docker tag {image_name} freeciv/{image_name.split('/')[1]}"
     subprocess.run(tag_command, shell=True, check=True)
 
     return
@@ -64,13 +64,13 @@ def stop_freeciv_web_service(service_name=fc_args['service']):
     return
 
 
-def start_freeciv_web_service(image_version='latest'):
+def start_freeciv_web_service(image_name=f'freeciv/{fc_web_args["image"]}'):
     client = docker.from_env()
 
     # start container
     try:
         container = client.containers.run(
-            f'freeciv/{docker_image_name}:{image_version}',
+            f'{image_name}',
             "sleep infinity",
             user="docker",
             name=fc_args['service'],
@@ -86,10 +86,10 @@ def start_freeciv_web_service(image_version='latest'):
     return
 
 
-def build_freeciv_web_service(service_name=fc_args['service'], image_version='latest'):
+def build_freeciv_web_service(service_name=fc_args['service'], image_name=f'civrealm/{fc_web_args["image"]}'):
     stop_freeciv_web_service(service_name)
-    download_freeciv_web_image(image_version)
-    start_freeciv_web_service(image_version)
+    download_freeciv_web_image(image_name)
+    start_freeciv_web_service(image_name)
     return
 
 
@@ -167,3 +167,9 @@ def update_javascript_for_clean_screenshot():
     # Rebuild the web server
     run_bash_command(
         f'docker exec -it {docker_image_name} bash -c "cd /docker/freeciv-web/; source build.sh"')
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Download a Freeciv web image.")
+    parser.add_argument('image_name', type=str, help="The name of the image to download")
+    args = parser.parse_args()
+    download_freeciv_web_image(args.image_name)

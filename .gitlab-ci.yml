@@ -90,7 +90,6 @@ test_python3.11:
   <<: *python_test_template
 
 local_pytest:
-  stage: tests
   script:
     - sudo pip install -e .
     - pytest -x
