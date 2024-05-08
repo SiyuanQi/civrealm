@@ -88,12 +88,3 @@ test_python3.11:
   extends:
     - .before_script_template
   <<: *python_test_template
-
-local_pytest:
-  script:
-    - sudo pip install -e .
-    - pytest -x
-  tags:
-    - local_pytest
-  only:
-    - dev
