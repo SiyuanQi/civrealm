@@ -43,6 +43,7 @@ class WebSocketClient(object):
         self.request_timeout = request_timeout
         self._ws_connection = None
         self._connection_closed = False
+        self._io_loop = None
 
     @final
     def connect(self, url):
@@ -63,6 +64,7 @@ class WebSocketClient(object):
             callback=self._connect_callback,
             on_message_callback=self._on_message,
         )
+        self._io_loop = ioloop.IOLoop.current()
 
     @final
     def start_ioloop(self):
@@ -73,19 +75,18 @@ class WebSocketClient(object):
         if self._connection_closed:
             # This happens when the connection was closed intentionally before the call to start_loop, e.g., the user pressed Ctrl+C to stop the client, or the server closed the connection.
             return
-
         try:
-            ioloop.IOLoop.current().start()
+            self._io_loop.start()
         except KeyboardInterrupt:
             raise KeyboardInterrupt
 
     @final
     def stop_ioloop(self):
-        ioloop.IOLoop.current().stop()
+        self._io_loop.stop()
 
     @final
     def get_ioloop(self):
-        return ioloop.IOLoop.current()
+        return self._io_loop
 
     @final
     def send(self, data):
